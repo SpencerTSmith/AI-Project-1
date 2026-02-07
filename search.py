@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-# 
+#
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -82,12 +82,38 @@ def depthFirstSearch(problem: SearchProblem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
 
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    start = problem.getStartState()
+
+    # Start with the successors of the start state
+    stack = util.Stack()
+
+    # Stack will hold a tuple of the state and the path to get there thus far.
+    stack.push((start, []))
+
+    visited = []
+
+    while not stack.isEmpty():
+        state, path = stack.pop()
+
+        if state in visited:
+            continue
+
+        # We have now visited this.
+        visited.append(state)
+
+        # Stop if this is the goal
+        if problem.isGoalState(state):
+            return path
+
+        # Push the successors of this state
+        for triple in problem.getSuccessors(state):
+            stack.push((triple[0], path + [triple[1]]))
+
+    # No path possible
+    return []
 
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
