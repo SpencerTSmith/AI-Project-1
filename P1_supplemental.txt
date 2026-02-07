@@ -10,8 +10,7 @@ QS2.1: What data structure do you use for implementing BFS? Why?
 For implementing BFS, you would use a Queue (FIFO - First in, Last out) data structure. Since BFS explores all nodes at the current depth, a Queue would be ideal for this, as one could enqueue new nodes in the depth, and dequeue out the old nodes as they move down the depths.
 
 QS3.1: What cost function did you use?  Please briefly describe how your cost function is designed (what factors does it consider and how heavy of a weight has each factor considered been given?)
-
-
+Our cost function uses the SearchProblem's cost function and we pass that to the priority queue function. We're confused on what this question is referring to for designing a cost function, since we just used provided one. We don't know what the factors or weights are, since we're using the problem's given cost function.
 
 QS4.1: What is the difference between the nullHeuristic  and the Manhattan distance heuristic? Does nullHeuristic give the optimal solution?  Why is the Manhattan distance heuristic better?
 The difference between the Manhattan distance heuristic and nullHeuristic is that the nullHeuristic simply returns 0 for any state, giving no guidance. This essentially transform the A* search to be a UCS, which still finds the optimal path. The Manhattan distance heuristic is better as it gives more informed guidance, leading to less steps needed to find the optimal path.
@@ -20,12 +19,13 @@ QS4.2: What happens on openMaze for the various search strategies?
 DFS chooses an extremely suboptimal path, while BFS and UCS find the optimal path but explore the entire maze with the same number of cells explored. A* with Manhattan Heuristic is the most efficient search, as it explores less paths. nullHeuristic reduces the A* search to a UCS, which is the same result as BFS.
 
 QS5.1: What states representation do you choose in this problem?
-
+Position and which corners we visited so far.
 
 QS5.2: Briefly explain your implementation
-
+Our startState is our initial position and an empty list. Our isGoalState is if we visited all of the corners (if the length of the visited list is 4). Our Successors check if the next state is one of the corners, and if it is we append it to the visited list. 
 
 QS6.1: What heuristic did you use for this corner problem?  Explain the potential strong points and weak points of your chosen heuristic.  Is your heuristic consistent?  Why?
-
+We used Manhattan Distance, but we calculated our distance to the closest corner, and add subsequent closest corners from there. From this, we calculate the full tour size of the maze efficiently. The strong point is that we calculate the whole tour, not just the closest corner per action. Weak point we do not consider walls at all. It is consistent, because each time Pacman reaches a corner, the maximum distance left of the tour is decreased.
 
 QS7.1: What heuristic did you use for this problem?  Explain the potential strong points and weak points of your chosen heuristic.  Is your heuristic consistent?  Why?
+We used Manhattan Distance tour again, where we would calculate the full tour size of the full maze, but instead of corner coordinates, we used the food pellet coordinates. We actually reached 6126 nodes expanded, which gives us extra credit as it is below 7000 expanded nodes. The strong and weak points are the same as the one in Q6.1, where the walls are not accounted for, and we calculate the whole tour so it is efficient. The heuristic is consistent,as the maximum distance left of the tour is decreased.
