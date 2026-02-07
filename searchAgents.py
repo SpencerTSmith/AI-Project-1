@@ -380,8 +380,6 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     position = state[0]
     visited  = state[1]
 
-    # Do farthest so we always overestimate
-
     # Stupid ass list comprehension
     unvisited = [corner for corner in corners if corner not in visited]
 
@@ -504,8 +502,35 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
-    return 0
+
+    # We already get all the unvisited from the state
+    food_list = foodGrid.asList()
+
+    def closest_manhattan(position, items):
+        closest = items[0]
+
+        for item in items:
+            if manhattan_dist(item, position) < manhattan_dist(closest, position):
+                closest = item
+
+        return closest
+
+    def manhattan_dist(pos1, pos2):
+        return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
+
+    manhattan_tour = 0
+
+    # Find distance from each subsequent corner to next.
+    # So, we minimize total tour distance.
+    curr_pos = position
+    unvisited = list(food_list)
+    while len(unvisited) != 0:
+        closest = closest_manhattan(curr_pos, unvisited)
+        manhattan_tour += manhattan_dist(curr_pos, closest)
+        curr_pos = closest
+        unvisited.remove(closest)
+
+    return manhattan_tour
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -535,8 +560,10 @@ class ClosestDotSearchAgent(SearchAgent):
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        solution = search.breadthFirstSearch(problem)
+
+        return solution
+
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -572,7 +599,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return (x, y) in self.food.asList()
 
 def mazeDistance(point1: Tuple[int, int], point2: Tuple[int, int], gameState: pacman.GameState) -> int:
     """
