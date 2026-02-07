@@ -1,28 +1,31 @@
 Answer questions marked as "QS"
 
-QS1.1:
+QS1.1: What data structure do you use for implementing DFS? Why?
+For implementing DFS, you would use a Stack (LIFO - Last In, First Out) data structure. You would want to use a LIFO structure, as DFS explores as deep as possible along a branch before backtracking if needed, which is supported how a stack is structured. You would push new nodes onto the stack as you explore the branch and pop them to backtrack if the search did not find the goal in that branch.
+
+QS1.2: The Pacman board will show an overlay of the states explored, and the order in which they were explored (brighter red means earlier exploration). Is the exploration order what you would have expected? Does Pacman actually go to all the explored squares on his way to the goal?
+The exploration order is expected, as Pacman follows from the brightest squares and goes down the final path to the more dim squares (later squares). Pacman does not visually goes down every single explored square on his way to the goal, as he only goes down the final path without backtracking.
+
+QS2.1: What data structure do you use for implementing BFS? Why?
+For implementing BFS, you would use a Queue (FIFO - First in, Last out) data structure. Since BFS explores all nodes at the current depth, a Queue would be ideal for this, as one could enqueue new nodes in the depth, and dequeue out the old nodes as they move down the depths.
+
+QS3.1: What cost function did you use?  Please briefly describe how your cost function is designed (what factors does it consider and how heavy of a weight has each factor considered been given?)
 
 
-QS1.2:
+
+QS4.1: What is the difference between the nullHeuristic  and the Manhattan distance heuristic? Does nullHeuristic give the optimal solution?  Why is the Manhattan distance heuristic better?
+The difference between the Manhattan distance heuristic and nullHeuristic is that the nullHeuristic simply returns 0 for any state, giving no guidance. This essentially transform the A* search to be a UCS, which still finds the optimal path. The Manhattan distance heuristic is better as it gives more informed guidance, leading to less steps needed to find the optimal path.
+
+QS4.2: What happens on openMaze for the various search strategies?
 
 
-QS2.1:
+QS5.1: What states representation do you choose in this problem?
 
 
-QS3.1:
+QS5.2: Briefly explain your implementation
 
 
-
-QS4.1:
-
-
-QS5.1:
+QS6.1: What heuristic did you use for this corner problem?  Explain the potential strong points and weak points of your chosen heuristic.  Is your heuristic consistent?  Why?
 
 
-QS5.2:
-
-
-QS6.1:
-
-
-QS7.1:
+QS7.1: What heuristic did you use for this problem?  Explain the potential strong points and weak points of your chosen heuristic.  Is your heuristic consistent?  Why?
