@@ -17,7 +17,7 @@ QS4.1: What is the difference between the nullHeuristic  and the Manhattan dista
 The difference between the Manhattan distance heuristic and nullHeuristic is that the nullHeuristic simply returns 0 for any state, giving no guidance. This essentially transform the A* search to be a UCS, which still finds the optimal path. The Manhattan distance heuristic is better as it gives more informed guidance, leading to less steps needed to find the optimal path.
 
 QS4.2: What happens on openMaze for the various search strategies?
-
+DFS chooses an extremely suboptimal path, while BFS and UCS find the optimal path but explore the entire maze with the same number of cells explored. A* with Manhattan Heuristic is the most efficient search, as it explores less paths. nullHeuristic reduces the A* search to a UCS, which is the same result as BFS. 
 
 QS5.1: What states representation do you choose in this problem?
 
