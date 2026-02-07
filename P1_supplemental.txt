@@ -29,3 +29,6 @@ We used Manhattan Distance, but we calculated our distance to the closest corner
 
 QS7.1: What heuristic did you use for this problem?  Explain the potential strong points and weak points of your chosen heuristic.  Is your heuristic consistent?  Why?
 We used Manhattan Distance tour again, where we would calculate the full tour size of the full maze, but instead of corner coordinates, we used the food pellet coordinates. We actually reached 6126 nodes expanded, which gives us extra credit as it is below 7000 expanded nodes. The strong and weak points are the same as the one in Q6.1, where the walls are not accounted for, and we calculate the whole tour so it is efficient. The heuristic is consistent,as the maximum distance left of the tour is decreased.
+
+Q8.1: Describe your solution and explain the potential strong points and weak points of your solution.
+Our solution was to simply find the closest food pellet from the current position, using UCS. The weak point is that we do not expand like Manhattan tour heuristic because we do not consider future nodes. The strong point is that it is cheaper to only consider the nearest neighbor, as it only expanded 350 nodes in this case for us.
