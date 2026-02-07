@@ -118,12 +118,78 @@ def depthFirstSearch(problem: SearchProblem):
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    start = problem.getStartState()
+
+    # Basically the same as DFS but with a queue instead so we visit every node
+    # at a depth first before moving deeper.
+
+    # Start with the successors of the start state
+    queue = util.Queue()
+
+    # Queue will hold a tuple of the state and the path to get there thus far.
+    queue.push((start, []))
+
+    visited = []
+
+    while not queue.isEmpty():
+        state, path = queue.pop()
+
+        if state in visited:
+            continue
+
+        # We have now visited this.
+        visited.append(state)
+
+        # Stop if this is the goal
+        if problem.isGoalState(state):
+            return path
+
+        # Push the successors of this state
+        for triple in problem.getSuccessors(state):
+            queue.push((triple[0], path + [triple[1]]))
+
+    # No path possible
+    return []
+
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+    # Just a wrapper to unpack the tuple and pass in the path thus far.
+    def cost(tup):
+        return problem.getCostOfActions(tup[1])
+
+    # Start with the successors of the start state
+    # Also pass our little wrapper cost function
+    queue = util.PriorityQueueWithFunction(cost)
+
+    # Queue will hold a tuple of the state and the path to get there thus far.
+    start = problem.getStartState()
+    queue.push((start, []))
+
+    visited = []
+
+    while not queue.isEmpty():
+        state, path = queue.pop()
+
+        if state in visited:
+            continue
+
+        # We have now visited this.
+        visited.append(state)
+
+        # Stop if this is the goal
+        if problem.isGoalState(state):
+            return path
+
+        # Push the successors of this state
+        for triple in problem.getSuccessors(state):
+            queue.push((triple[0], path + [triple[1]]))
+
+    # No path possible
+    return []
 
 def nullHeuristic(state, problem=None):
     """
@@ -135,8 +201,43 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
 
+    # Just a wrapper to unpack the tuple and pass in the path thus far
+    # + the heuristic
+    def cost(tup):
+        state = tup[0]
+        path  = tup[1]
+        return problem.getCostOfActions(path) + heuristic(state, problem)
+
+    # Start with the successors of the start state
+    # Also pass our little wrapper cost function
+    queue = util.PriorityQueueWithFunction(cost)
+
+    # Queue will hold a tuple of the state and the path to get there thus far.
+    start = problem.getStartState()
+    queue.push((start, []))
+
+    visited = []
+
+    while not queue.isEmpty():
+        state, path = queue.pop()
+
+        if state in visited:
+            continue
+
+        # We have now visited this.
+        visited.append(state)
+
+        # Stop if this is the goal
+        if problem.isGoalState(state):
+            return path
+
+        # Push the successors of this state
+        for state, direction,_ in problem.getSuccessors(state):
+            queue.push((state, path + [direction]))
+
+    # No path possible
+    return []
 
 # Abbreviations
 bfs = breadthFirstSearch
