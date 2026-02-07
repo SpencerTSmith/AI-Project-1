@@ -281,6 +281,7 @@ class CornersProblem(search.SearchProblem):
         """
         Stores the walls, pacman's starting position and corners.
         """
+        self.startingGameState = startingGameState
         self.walls = startingGameState.getWalls()
         self.startingPosition = startingGameState.getPacmanPosition()
         top, right = self.walls.height-2, self.walls.width-2
@@ -376,6 +377,7 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     """
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
+    pacman.GameState
 
     position = state[0]
     visited  = state[1]
@@ -383,33 +385,14 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     # Stupid ass list comprehension
     unvisited = [corner for corner in corners if corner not in visited]
 
-    if len(unvisited) == 0:
-        return 0
+    # We have to at least go to the farthest piece of food, use the mazeDistance helper
+    # Since it gives a more accurate distance than manhattan
 
-    def closest_manhattan(position, corners):
-        closest = corners[0]
+    max_dist = 0
+    for item in unvisited:
+        max_dist = max(max_dist, mazeDistance(position, item, problem.startingGameState))
 
-        for corner in corners:
-            if manhattan_dist(corner, position) < manhattan_dist(closest, position):
-                closest = corner
-
-        return closest
-
-    def manhattan_dist(pos1, pos2):
-        return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
-
-    manhattan_tour = 0
-
-    # Find distance from each subsequent corner to next.
-    # So, we minimize total tour distance.
-    curr_pos = position
-    while len(unvisited) != 0:
-        closest = closest_manhattan(curr_pos, unvisited)
-        manhattan_tour += manhattan_dist(curr_pos, closest)
-        curr_pos = closest
-        unvisited.remove(closest)
-
-    return manhattan_tour
+    return max_dist
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -503,34 +486,18 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     """
     position, foodGrid = state
 
+
     # We already get all the unvisited from the state
     food_list = foodGrid.asList()
 
-    def closest_manhattan(position, items):
-        closest = items[0]
+    # We have to at least go to the farthest piece of food, use the mazeDistance helper
+    # Since it gives a more accurate distance than manhattan
 
-        for item in items:
-            if manhattan_dist(item, position) < manhattan_dist(closest, position):
-                closest = item
+    max_dist = 0
+    for food in food_list:
+        max_dist = max(max_dist, mazeDistance(position, food, problem.startingGameState))
 
-        return closest
-
-    def manhattan_dist(pos1, pos2):
-        return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
-
-    manhattan_tour = 0
-
-    # Find distance from each subsequent corner to next.
-    # So, we minimize total tour distance.
-    curr_pos = position
-    unvisited = list(food_list)
-    while len(unvisited) != 0:
-        closest = closest_manhattan(curr_pos, unvisited)
-        manhattan_tour += manhattan_dist(curr_pos, closest)
-        curr_pos = closest
-        unvisited.remove(closest)
-
-    return manhattan_tour
+    return max_dist
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -560,7 +527,8 @@ class ClosestDotSearchAgent(SearchAgent):
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
 
-        solution = search.breadthFirstSearch(problem)
+        # Just grab the closest through ucs
+        solution = search.ucs(problem)
 
         return solution
 
