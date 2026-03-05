@@ -1,27 +1,26 @@
 Please Enter your team's full names and your answers to the questions marked by QS questions here!
 
-Q1.1:
+Q1.1: Explain the implementation of ReflexAgent in multiAgents.py and how you improved it. 
+The implementation of the ReflexAgent is to do the immediate action that would maximize the score. We improved it by disincentivizing corners and being close to ghosts using Manhattan distance. Corners are bad because Pacman can get cornered by a ghost and lose. Incentivize to get the closest food and a constant penalty for remaining amount of food, so pacman is incentivized to remove as much food as possible.
 
-Q1.2:
+Q1.2: What is your value function and why do you think this estimation makes sense?
+Our value function is to reduce score when < 3 Manhattan distance from a ghost to incentivize staying alive, which is beneficial for eating all pellets as dying early is not beneficial. Incentivize to get the closest food and a constant penalty for remaining amount of food, so pacman is incentivized to remove as much food as possible.
 
-
-
-
-Q2.1:
-
-
+Q2.1: Explain your algorithm. Why do you think it is working?
+The algorithm is working as it is a classic minimax function and we do the first round manually to extract the action that leads to the most optimal score. 
 
 
+Q3.1: The AlphaBetaAgent minimax values should be identical to the MinimaxAgent minimax values.  Explain why.
+AlphaBeta pruning does not change the result of a typical Minimax agent, as it only prunes unnecessary calculations. This means that it saves on computations that would not be needed, and will not affect the overall conclusion.
 
-Q3.1:
-
-Q3.2
-
-
-
-Q4.1:
+Q3.2 Explain your strategy for breaking a tie.
+Our strategy for breaking a tie would just be to pick the first discovered action. This was done by changing the >= <= signs in alpha beta pruning to be just > and <.
 
 
-Q5.1:
+Q4.1: Explain your Expectimax algorithm
+The ghost adversaries will behavior randomly so our expectimax algorithm is more optimal as it approximates the actual behavior of the ghosts so it wins more than the AlphaBetaAgent. Our Expectimax algorithm has adversaries that just take the average score of all their actions. For the maximizing agent, it's just a minimax.
 
+
+Q5.1: Explain your new evaluation function, why do you think this new evaluation function is better compared to the previous one?
+Our new evaluation function is utilizing an expectimax with a depth of 2, and mapping it to our old evaluation function which incentivizes pacman to get closer to nearest pellet, stay away from ghosts that are not scared, and avoiding corners to not get trapped. In summary, we took our old evaluation function and considered a few steps into the future instead of the current status.
 
